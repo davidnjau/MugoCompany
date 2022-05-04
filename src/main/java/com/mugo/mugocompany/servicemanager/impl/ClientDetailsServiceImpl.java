@@ -1,10 +1,11 @@
-package com.mugo.mugocompany.servicemanager;
+package com.mugo.mugocompany.servicemanager.impl;
 
 import com.mugo.mugocompany.DbClientInfo;
 import com.mugo.mugocompany.FormatterHelper;
 import com.mugo.mugocompany.Results;
 import com.mugo.mugocompany.entity.ClientDetails;
 import com.mugo.mugocompany.repository.ClientDetailsRepository;
+import com.mugo.mugocompany.servicemanager.service.ClientDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ClientDetailsServiceImpl implements ClientDetailsService{
+public class ClientDetailsServiceImpl implements ClientDetailsService {
 
     int pageNo = 1;
     int pageSize = 10;

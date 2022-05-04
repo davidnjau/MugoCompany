@@ -1,7 +1,8 @@
 package com.mugo.mugocompany.controller;
 
 import com.mugo.mugocompany.*;
-import com.mugo.mugocompany.servicemanager.ClientDetailsServiceImpl;
+import com.mugo.mugocompany.servicemanager.impl.ClientDetailsServiceImpl;
+import com.mugo.mugocompany.servicemanager.impl.SanlamServiceImpl;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,9 @@ public class MugoController {
 
     @Autowired
     private ClientDetailsServiceImpl clientDetailsService;
+
+    @Autowired
+    private SanlamServiceImpl sanlamService;
 
     @RequestMapping(value = "/api/v1/files/import-client", method = RequestMethod.POST)
     public ResponseEntity importClientFile(@RequestParam("file") MultipartFile files) throws IOException {
@@ -55,19 +59,22 @@ public class MugoController {
             }
 
             Results results = clientDetailsService.addClientList(excelUsersList);
-
-            int statusCode = results.getCode();
-            if (statusCode == 200){
-                return new ResponseEntity(new ResponseMessage("Data is been processed. Refresh to update."), HttpStatus.OK);
-            }else {
-                return ResponseEntity.badRequest().body(new ResponseMessage(results.getDetails()));
-
-            }
-
-
+            return getResponse(results);
 
         }catch (Exception e){
             return ResponseEntity.badRequest().body(new ResponseMessage("There was an error with the excel sheet. Please consult the developer and try again."));
+
+        }
+
+    }
+
+    private ResponseEntity<?> getResponse(Results results) {
+
+        int statusCode = results.getCode();
+        if (statusCode == 200){
+            return new ResponseEntity(new ResponseMessage("Data is been processed. Refresh to update."), HttpStatus.OK);
+        }else {
+            return ResponseEntity.badRequest().body(new ResponseMessage(results.getDetails()));
 
         }
 
@@ -94,7 +101,7 @@ public class MugoController {
                             !amount.equals("") &&
                             !narration.equals("")){
 
-                        DbSanlamData dbSanlamData = new DbSanlamData(claimNumber, amount, narration);
+                        DbSanlamData dbSanlamData = new DbSanlamData(claimNumber, amount, narration, "");
                         dbSanlamDataList.add(dbSanlamData);
 
                     }
@@ -102,9 +109,8 @@ public class MugoController {
                 }
             }
 
-
-//            Results results = contactsDataService.uploadContacts(excelUsersList);
-            return new ResponseEntity(new ResponseMessage("Saved"), HttpStatus.OK);
+            Results results = sanlamService.addSanlamList(dbSanlamDataList);
+            return getResponse(results);
 
         }catch (Exception e){
             System.out.println("+++++++"+e);

@@ -19,7 +19,8 @@ data class DbClientInfo(
 data class DbSanlamData(
     val claimNumber: String,
     val amount:String,
-    val narration: String
+    val narration: String,
+    val regNumber: String,
 )
 data class DbClientRes(
     val int: Int,

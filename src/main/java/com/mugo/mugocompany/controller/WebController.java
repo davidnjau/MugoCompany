@@ -1,34 +1,34 @@
 package com.mugo.mugocompany.controller;
 
-import com.mugo.mugocompany.Results;
 import com.mugo.mugocompany.entity.ClientDetails;
-import com.mugo.mugocompany.servicemanager.ClientDetailsServiceImpl;
+import com.mugo.mugocompany.entity.SanlamData;
+import com.mugo.mugocompany.servicemanager.impl.ClientDetailsServiceImpl;
+import com.mugo.mugocompany.servicemanager.impl.SanlamServiceImpl;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class WebController {
 
     int pageNo = 1;
-    int pageSize = 10;
+    int pageSize = 20;
 
     String sortField = "createdAt";
-    String sortDirection = "DESC";
+    String sortDirection = "ASC";
 
-    String userSortField = "clientName";
+    String userSortField = "registrationNumber";
     String userSortDirection = "DESC";
 
     @Autowired
     private ClientDetailsServiceImpl clientDetailsService;
+
+    @Autowired
+    private SanlamServiceImpl sanlamService;
 
 
     @RequestMapping(value = "/")
@@ -44,7 +44,8 @@ public class WebController {
     @NotNull
     private ModelAndView getModelAndView() {
         ModelAndView modelAndView = new ModelAndView("master");
-        List<ClientDetails> clientDetailsList = clientDetailsService.getClientListData(pageNo, pageSize, userSortField, userSortDirection);
+        List<ClientDetails> clientDetailsList = clientDetailsService
+                .getClientListData(pageNo, pageSize, userSortField, userSortDirection);
 
         modelAndView.addObject("clientList", clientDetailsList);
         modelAndView.addObject("pageNo", pageNo);
@@ -56,9 +57,20 @@ public class WebController {
     }
 
     @RequestMapping(value = "/sanlam")
-    public String getSanlam(){
-        return "sanlam";
+    public ModelAndView getSanlam(){
+        ModelAndView modelAndView = new ModelAndView("sanlam");
+        List<SanlamData> sanlamDataList = sanlamService
+                .getSanlamListData(pageNo, pageSize, userSortField, userSortDirection);
+
+        modelAndView.addObject("sanlamList", sanlamDataList);
+        modelAndView.addObject("pageNo", pageNo);
+        modelAndView.addObject("pageSize", pageSize);
+        modelAndView.addObject("total", sanlamDataList.size());
+
+
+        return modelAndView;
     }
+
     @RequestMapping(value = "/finance")
     public String getFinance(){
         return "finance";

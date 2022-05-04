@@ -1,4 +1,4 @@
-package com.mugo.mugocompany.servicemanager;
+package com.mugo.mugocompany.servicemanager.service;
 
 import com.mugo.mugocompany.DbClientInfo;
 import com.mugo.mugocompany.Results;
