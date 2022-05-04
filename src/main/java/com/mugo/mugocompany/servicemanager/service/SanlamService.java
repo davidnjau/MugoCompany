@@ -16,5 +16,6 @@ public interface SanlamService {
     Results getSanlamDataList(int pageNo, int pageSize, String sortField, String sortDirection);
     Results getSanlamDataInfo(String id);
 
+    Results extractValues(String sanlamId);
 
 }

@@ -6,6 +6,7 @@ import com.mugo.mugocompany.Results;
 import com.mugo.mugocompany.entity.ClientDetails;
 import com.mugo.mugocompany.entity.SanlamData;
 import com.mugo.mugocompany.entity.SanlamList;
+import com.mugo.mugocompany.repository.ClientDetailsRepository;
 import com.mugo.mugocompany.repository.SanlamDataRepository;
 import com.mugo.mugocompany.repository.SanlamListRepository;
 import com.mugo.mugocompany.servicemanager.service.SanlamService;
@@ -34,6 +35,9 @@ public class SanlamServiceImpl implements SanlamService {
 
     @Autowired
     private SanlamListRepository sanlamListRepository;
+
+    @Autowired
+    private ClientDetailsServiceImpl clientDetailsService;
 
     private FormatterHelper formatterHelper = new FormatterHelper();
 
@@ -71,13 +75,7 @@ public class SanlamServiceImpl implements SanlamService {
         return null;
     }
 
-    private SanlamList saveSanlamData(int totalAmount){
 
-        String sanlamDataName = formatterHelper.getSanlamDataName();
-        SanlamList sanlamList = new SanlamList(sanlamDataName, totalAmount, false);
-        return sanlamListRepository.save(sanlamList);
-
-    }
 
     @Override
     public Results getSanlamDataList(int pageNo, int pageSize, String sortField, String sortDirection) {
@@ -99,6 +97,14 @@ public class SanlamServiceImpl implements SanlamService {
 
     }
 
+    @Override
+    public Results extractValues(String sanlamId) {
+
+        formatterHelper.extractBacValues(sanlamId, sanlamDataRepository, clientDetailsService);
+
+        return new Results(200, "Please wait as we process your request.");
+    }
+
     private SanlamList getAllSanlamData(String sanlamId){
 
         Optional<SanlamList> optionalSanlamData = sanlamListRepository.findById(sanlamId);
@@ -118,6 +124,9 @@ public class SanlamServiceImpl implements SanlamService {
                 ? Sort.by(sortPageField).ascending() : Sort.by(sortPageField).descending();
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         Page<SanlamList> data = sanlamListRepository.findAll(pageable);
+
+
+
 
         return data.getContent();
 
@@ -143,27 +152,15 @@ public class SanlamServiceImpl implements SanlamService {
 
     private void addSanlamDataList(List<DbSanlamData> dbSanlamDataList){
 
-        int totalAmount = 0;
+        String sanlamDataName = formatterHelper.getSanlamDataName();
+        SanlamList sanlamList = new SanlamList(sanlamDataName, "0", false);
 
-        List<SanlamData> sanlamDataList = new ArrayList<>();
-
-        for (int i = 0; i < dbSanlamDataList.size(); i++){
-
-            String claimNumber = dbSanlamDataList.get(i).getClaimNumber();
-            String amount = dbSanlamDataList.get(i).getAmount();
-            String narration = dbSanlamDataList.get(i).getNarration();
-
-            totalAmount = totalAmount + Integer.parseInt(amount);
-
-            SanlamData sanlamData = new SanlamData(claimNumber, amount, narration, "");
-            sanlamDataList.add(sanlamData);
-        }
-
-        saveSanlamData(totalAmount);
-
-        formatterHelper.saveSanlamDataList(sanlamDataList, sanlamDataRepository);
+        formatterHelper.saveSanlamDataList(
+                dbSanlamDataList, sanlamDataRepository,
+                sanlamList, sanlamListRepository);
 
     }
+
 
     private SanlamData getSanlamData(String sanlamId){
 

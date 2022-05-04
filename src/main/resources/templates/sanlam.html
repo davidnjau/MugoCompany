@@ -61,22 +61,23 @@
                           <th scope="col" class="border-0">Action</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody th:each="sanlamData: ${sanlamList}">
 
                         <tr>
-                          <td>1</td>
-                          <td>SAN/2205222</td>
-                          <td>22/April/2021</td>
-                          <td>91,800.00</td>
-                          <td>True</td>
+                          <td th:text="${sanlamDataStat.index + 1}">1</td>
+                          <td th:text="${sanlamData.getSystemName()}">SAN/2205222</td>
+                          <td th:text="${sanlamData.getCreatedAt()}">22/April/2021</td>
+                          <td th:text="${sanlamData.getTotalAmount()}">91,800.00</td>
+                          <td th:text="${sanlamData.isExtracted()}">True</td>
 
                           <td>
                             <div class="btn-group btn-group-sm">
-                              <button type="button" class="btn btn-white">
+                              <a type="button" class="btn btn-white" th:attr="onclick=|extractSanlamData('${sanlamData.getId()}')|">
                                 <span class="text-success">
                                   <i class="material-icons">sync</i>
                                 </span> Extract
-                              </button>
+                              </a>
+
                               <a href="/sanlam_details" type="button" class="btn btn-white">
                                 <span class="text-success">
                                   <i class="material-icons">remove_red_eye</i>

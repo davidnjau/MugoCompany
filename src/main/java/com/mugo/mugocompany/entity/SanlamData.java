@@ -4,10 +4,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -38,15 +35,18 @@ public class SanlamData {
     private String amount;
     private String narration;
     private String registrationNumber;
+    private String sanlamListId;
+  
 
     public SanlamData() {
     }
 
-    public SanlamData(String claimNumber, String amount, String narration, String registrationNumber) {
+    public SanlamData(String claimNumber, String amount, String narration, String registrationNumber, String sanlamListId) {
         this.claimNumber = claimNumber;
         this.amount = amount;
         this.narration = narration;
         this.registrationNumber = registrationNumber;
+        this.sanlamListId = sanlamListId;
     }
 
     public String getId() {
@@ -103,5 +103,13 @@ public class SanlamData {
 
     public void setRegistrationNumber(String registrationNumber) {
         this.registrationNumber = registrationNumber;
+    }
+
+    public String getSanlamListId() {
+        return sanlamListId;
+    }
+
+    public void setSanlamListId(String sanlamListId) {
+        this.sanlamListId = sanlamListId;
     }
 }

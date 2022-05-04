@@ -4,11 +4,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class SanlamList {
@@ -35,13 +35,16 @@ public class SanlamList {
     private Date updatedAt;
 
     private String systemName;
-    private int totalAmount;
+    private String totalAmount;
     private boolean extracted;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<SanlamData> sanlamDataArrayList = new ArrayList<>();
 
     public SanlamList() {
     }
 
-    public SanlamList(String systemName, int totalAmount, boolean extracted) {
+    public SanlamList(String systemName, String totalAmount, boolean extracted) {
         this.systemName = systemName;
         this.totalAmount = totalAmount;
         this.extracted = extracted;
@@ -79,11 +82,11 @@ public class SanlamList {
         this.systemName = systemName;
     }
 
-    public int getTotalAmount() {
+    public String getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(int totalAmount) {
+    public void setTotalAmount(String totalAmount) {
         this.totalAmount = totalAmount;
     }
 

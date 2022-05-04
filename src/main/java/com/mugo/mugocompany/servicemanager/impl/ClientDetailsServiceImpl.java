@@ -69,6 +69,18 @@ public class ClientDetailsServiceImpl implements ClientDetailsService {
         }
     }
 
+    @Override
+    public ClientDetails getClientByRegNo(String regNo) {
+
+        boolean isRegNo = clientDetailsRepository.existsByRegistrationNumber(regNo);
+        if (isRegNo){
+            return clientDetailsRepository.findByRegistrationNumber(regNo);
+        }else {
+            return null;
+        }
+    }
+
+
     private ClientDetails saveClientDetails(DbClientInfo dbClientInfo){
 
         String clientName = dbClientInfo.getClientName();

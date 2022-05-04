@@ -2,6 +2,7 @@ package com.mugo.mugocompany.controller;
 
 import com.mugo.mugocompany.entity.ClientDetails;
 import com.mugo.mugocompany.entity.SanlamData;
+import com.mugo.mugocompany.entity.SanlamList;
 import com.mugo.mugocompany.servicemanager.impl.ClientDetailsServiceImpl;
 import com.mugo.mugocompany.servicemanager.impl.SanlamServiceImpl;
 import org.jetbrains.annotations.NotNull;
@@ -59,8 +60,8 @@ public class WebController {
     @RequestMapping(value = "/sanlam")
     public ModelAndView getSanlam(){
         ModelAndView modelAndView = new ModelAndView("sanlam");
-        List<SanlamData> sanlamDataList = sanlamService
-                .getSanlamListData(pageNo, pageSize, userSortField, userSortDirection);
+        List<SanlamList> sanlamDataList = sanlamService
+                .getAllSanlamData(pageNo, pageSize, "systemName", userSortDirection);
 
         modelAndView.addObject("sanlamList", sanlamDataList);
         modelAndView.addObject("pageNo", pageNo);
