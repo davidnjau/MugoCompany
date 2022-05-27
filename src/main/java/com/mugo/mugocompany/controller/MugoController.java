@@ -225,6 +225,7 @@ public class MugoController {
         csvPrinter.close();
 
         /*YOU CAN OPEN THE FILE DIRECTLY USING THE VARIABLE {filename} HERE INSTEAD OF JUST SAVING FILES*/
+        /*YOU CAN ALSO SAVE FILE TO DB FOR RECORD KEEPING*/
         return "new ArrayList<>()";
     }
 
