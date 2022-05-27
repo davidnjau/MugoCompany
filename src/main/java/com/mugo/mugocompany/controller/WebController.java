@@ -1,16 +1,20 @@
 package com.mugo.mugocompany.controller;
 
 import com.mugo.mugocompany.entity.ClientDetails;
-import com.mugo.mugocompany.entity.SanlamData;
 import com.mugo.mugocompany.entity.SanlamList;
 import com.mugo.mugocompany.servicemanager.impl.ClientDetailsServiceImpl;
 import com.mugo.mugocompany.servicemanager.impl.SanlamServiceImpl;
+import com.opencsv.CSVReader;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -33,12 +37,13 @@ public class WebController {
 
 
     @RequestMapping(value = "/")
-    public ModelAndView getHome(){
+    public ModelAndView getHome() {
 
         return getModelAndView();
     }
+
     @RequestMapping(value = "/master")
-    public ModelAndView getMaster(){
+    public ModelAndView getMaster() {
         return getModelAndView();
     }
 
@@ -58,7 +63,7 @@ public class WebController {
     }
 
     @RequestMapping(value = "/sanlam")
-    public ModelAndView getSanlam(){
+    public ModelAndView getSanlam() {
         ModelAndView modelAndView = new ModelAndView("sanlam");
         List<SanlamList> sanlamDataList = sanlamService
                 .getAllSanlamData(pageNo, pageSize, "systemName", userSortDirection);
@@ -73,19 +78,22 @@ public class WebController {
     }
 
     @RequestMapping(value = "/finance")
-    public String getFinance(){
+    public String getFinance() {
         return "finance";
     }
+
     @RequestMapping(value = "/recipients")
-    public String getRecipients(){
+    public String getRecipients() {
         return "recipients";
     }
+
     @RequestMapping(value = "/sanlam_details")
-    public String getSanlamDetails(){
+    public String getSanlamDetails() {
         return "sanlam_details";
     }
+
     @RequestMapping(value = "/finance_details")
-    public String getFinanceDetails(){
+    public String getFinanceDetails() {
         return "finance_details";
     }
 
